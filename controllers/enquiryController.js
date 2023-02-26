@@ -39,9 +39,11 @@ const getEnquiries =async (req, res, next) => {
     }else{
         currentYear = new Date().getFullYear().toString();
     }
-    Enquiries.find({ status: status, payment_status: paymentType, phone: phone, name: name, _id: id }).limit(count).skip(offset)
+   Enquiries.find({ status: status, payment_status: paymentType, phone: phone, name: name, _id: id }).limit(count).skip(offset)
     .then(result => {
         var data = [];
+        console.log(month)
+
         result.forEach(record=>{
 
             if(record.entryDate.substring(3, 5) === month && record.entryDate.substring(6, 10) === currentYear ){
