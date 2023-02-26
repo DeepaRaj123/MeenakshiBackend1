@@ -2,21 +2,25 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const enquirySchema = new Schema({
 
-  _id: {
+  address: {
     type: String,
-    required: true
+    required: false
   },
-  uid: {
-    type: String,
-    required: true
-  },
-  phone: {
+  brand_value: {
       type: String,
-      required: true
+      required: false
   },
-  userType: {
+  email: {
+    type: String,
+    required: false
+  },
+  entryDate: {
+    type: String,
+    required: false
+  },
+  message: {
     type: String,
     required: false
   },
@@ -24,43 +28,48 @@ const userSchema = new Schema({
     type: String,
     required: false
   },
-  email: {
+  phone: {
     type: String,
     required: false
   },
-  userName: {
+  service_value: [],
+  staffName: {
     type: String,
     required: false
   },
-  isAuth: {
-    type: Boolean,
-    required: true
-  },
-  gender: {
+  status: {
     type: String,
     required: false
   },
-  dob: {
+  completedDate: {
     type: String,
     required: false
   },
-  location: {
+  deliveryDate: {
     type: String,
     required: false
   },
-  profession: {
+  payment_status: {
     type: String,
     required: false
   },
-  organizationType: {
+  pcbType: {
     type: String,
     required: false
   },
-  organizationName: {
+  price: {
     type: String,
     required: false
   },
-
+  qrCodeURL: {
+    type: String,
+    required: false
+  },
+  reason: {
+    type: String,
+    required: false
+  },
+  technician: []
 });
 
-module.exports = mongoose.model('userInfo', userSchema,"userInfo");
+module.exports = mongoose.model('Enquiries', enquirySchema,"Enquiries");

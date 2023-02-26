@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
-const userRoutes = require('./routes/user-routes');
+const enquiryRoutes = require('./routes/enquiry-routes');
 
 
 var MONGODB_URI =process.env.MONGODB_URI;
@@ -15,8 +15,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/', userRoutes.routes);
-
+app.use('/', enquiryRoutes.routes);
 
 mongoose
 .connect(MONGODB_URI,{ useNewUrlParser: true,useUnifiedTopology: true})
