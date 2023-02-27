@@ -69,7 +69,10 @@ const enquirySchema = new Schema({
     type: String,
     required: false
   },
-  technician: []
+  technician: {
+    type: String,
+    required: false
+  },
 });
 
 module.exports = mongoose.model('Enquiries', enquirySchema,"Enquiries");

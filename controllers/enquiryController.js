@@ -21,7 +21,7 @@ const getEnquiries =async (req, res, next) => {
     if(req.query.status){
         status = req.query.status
     }
-    paymentType = req.query.paymentType ? req.query.paymentType : null;
+    paymentType = req.query.paymentType ? req.query.paymentType : '';
     name = req.query.name ? req.query.name : {$exists: true};
     phone = req.query.phone ? req.query.phone : {$exists: true};
     id = req.query.id ? ObjectId(""+req.query.id+"") : {$exists: true};
@@ -42,12 +42,10 @@ const getEnquiries =async (req, res, next) => {
    Enquiries.find({ status: status, payment_status: paymentType, phone: phone, name: name, _id: id }).limit(count).skip(offset)
     .then(result => {
         var data = [];
-        console.log(month)
 
         result.forEach(record=>{
 
             if(record.entryDate.substring(3, 5) === month && record.entryDate.substring(6, 10) === currentYear ){
-
                 data.push(record);
             }
         })
@@ -105,7 +103,7 @@ const postEnquiries =async (req, res, next) => {
               price: req.body.price?req.body.price:"",
               qrCodeURL: req.body.qrCodeURL?req.body.qrCodeURL:"",
               reason: req.body.reason?req.body.reason:"",
-              technician: req.body.technician?req.body.technician:[]
+              technician: req.body.technician?req.body.technician:""
         }
 
     Enquiries.insertMany(enquiry)
