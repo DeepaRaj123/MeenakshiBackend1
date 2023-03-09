@@ -21,7 +21,7 @@ const getEnquiries =async (req, res, next) => {
     if(req.query.status){
         status = req.query.status
     }
-    paymentType = req.query.paymentType ? req.query.paymentType : '';
+    paymentType = req.query.paymentType ? req.query.paymentType : {$exists: true};
     name = req.query.name ? req.query.name : {$exists: true};
     phone = req.query.phone ? req.query.phone : {$exists: true};
     id = req.query.id ? ObjectId(""+req.query.id+"") : {$exists: true};
@@ -43,9 +43,13 @@ const getEnquiries =async (req, res, next) => {
     .then(result => {
         var data = [];
 
+
         result.forEach(record=>{
 
-            if(record.entryDate.substring(3, 5) === month && record.entryDate.substring(6, 10) === currentYear ){
+           if(record.entryDate.substring(3, 5) === month && record.entryDate.substring(6, 10) === currentYear ){
+            // if( record.entryDate.substring(6, 10) === currentYear ){
+                console.log(record.entryDate.substring(3, 5))
+
                 data.push(record);
             }
         })
@@ -68,6 +72,12 @@ const getEnquiries =async (req, res, next) => {
             result:[]
         }); 
       })
+
+// Enquiries.updateMany({}, {$set:{"technician": ""}}).then(result=>{
+// console.log(result)
+// }).catch(err=>{
+//     console.log(err)
+// })
 
  
 }
