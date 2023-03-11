@@ -176,7 +176,12 @@ const patchEnquiries =async (req, res, next) => {
       })
  
 }
+
+const showwelcomeMessage =async (req, res, next) => {
+    res.json('This is MeenakshiControlSystem API'); 
+  }
    
 module.exports = {
-    getEnquiries,postEnquiries,patchEnquiries
+    getEnquiries,postEnquiries,patchEnquiries,
+    showwelcomeMessage
 }
