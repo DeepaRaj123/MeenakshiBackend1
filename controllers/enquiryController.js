@@ -47,9 +47,6 @@ const getEnquiries =async (req, res, next) => {
         result.forEach(record=>{
 
            if(record.entryDate.substring(3, 5) === month && record.entryDate.substring(6, 10) === currentYear ){
-            // if( record.entryDate.substring(6, 10) === currentYear ){
-                console.log(record.entryDate.substring(3, 5))
-
                 data.push(record);
             }
         })
@@ -71,15 +68,52 @@ const getEnquiries =async (req, res, next) => {
             message: err,
             result:[]
         }); 
-      })
+      }) 
+}
 
-// Enquiries.updateMany({}, {$set:{"technician": ""}}).then(result=>{
-// console.log(result)
-// }).catch(err=>{
-//     console.log(err)
-// })
+const getAllEnquiries =async (req, res, next) => {
 
- 
+    var offset = 0, count={$exists: true}, message;
+    var paymentType,name,phone,id;
+    var status = {$exists: true};
+
+    if(req.query.offset){
+        offset = req.query.offset
+    }
+    if(req.query.count){
+        count = req.query.count
+    }
+    if(req.query.status){
+        status = req.query.status
+    }
+    paymentType = req.query.paymentType ? req.query.paymentType : {$exists: true};
+    name = req.query.name ? req.query.name : {$exists: true};
+    phone = req.query.phone ? req.query.phone : {$exists: true};
+    id = req.query.id ? ObjectId(""+req.query.id+"") : {$exists: true};
+
+
+   Enquiries.find({ status: status, payment_status: paymentType, phone: phone, name: name, _id: id }).limit(count).skip(offset)
+    .then(data => {
+
+        if(data.length>0){
+            message = 'Enquiries fetched successfully!';
+        }else{
+            message = 'No results found!';
+        }
+        res.status(200).json({
+            success:true, 
+            totalCount:data.length,
+            message:message,
+            result:data
+        });
+     
+    }).catch(err=>{
+        res.status(500).json({
+            success:false, 
+            message: err,
+            result:[]
+        }); 
+      }) 
 }
 
 //posting new record
@@ -176,7 +210,12 @@ const patchEnquiries =async (req, res, next) => {
       })
  
 }
+
+const showwelcomeMessage =async (req, res, next) => {
+    res.json('This is MeenakshiControlSystem API'); 
+  }
    
 module.exports = {
-    getEnquiries,postEnquiries,patchEnquiries
+    getEnquiries, getAllEnquiries, postEnquiries,patchEnquiries,
+    showwelcomeMessage
 }
