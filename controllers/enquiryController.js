@@ -211,11 +211,32 @@ const patchEnquiries =async (req, res, next) => {
  
 }
 
+const deleteEnquiry =async (req, res, next) => {
+    
+
+Enquiries.deleteOne(
+        {"_id" : ObjectId(""+req.params.id+"")}).then(result => {
+
+    res.status(200).json({
+        success:true, 
+        message: 'Enquiry deleted successfully',
+        result:result
+    });
+}).catch(err=>{
+    res.status(500).json({
+        success:false, 
+        message: err,
+        result:[]
+    }); 
+  })
+
+}
+
 const showwelcomeMessage =async (req, res, next) => {
     res.json('This is MeenakshiControlSystem API'); 
   }
    
 module.exports = {
     getEnquiries, getAllEnquiries, postEnquiries,patchEnquiries,
-    showwelcomeMessage
+    deleteEnquiry, showwelcomeMessage
 }
