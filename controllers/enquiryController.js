@@ -3,6 +3,8 @@
 const Enquiries = require('../models/enquiry');
 const jwt = require('jsonwebtoken');
 var ObjectId = require('mongodb').ObjectID;
+const Credentials = require('../models/credentails');
+
 
 const getEnquiries =async (req, res, next) => {
 
@@ -232,11 +234,45 @@ Enquiries.deleteOne(
 
 }
 
+const sendMessage =async (req, res, next) => {
+    
+        Credentials.find()
+        .then(result => {
+            console.log(result)
+            
+    const accountSid = result[0].accountSid;
+    const authToken = result[0].authToken;
+    const client = require('twilio')(accountSid, authToken);
+            client.messages
+            .create({
+                body: req.body.message,
+                from: result[0].from,
+                to: 'whatsapp:+91'+req.body.phone
+            })
+            .then(message => {
+                res.status(200).json({
+                    success:true, 
+                    message:'Message sent successfully',
+                });
+            })
+            .done();
+
+       
+         
+        }).catch(err=>{
+            res.status(500).json({
+                success:false, 
+                message: err,
+                result:[]
+            }); 
+          }) 
+}
+
 const showwelcomeMessage =async (req, res, next) => {
     res.json('This is MeenakshiControlSystem API'); 
   }
    
 module.exports = {
     getEnquiries, getAllEnquiries, postEnquiries,patchEnquiries,
-    deleteEnquiry, showwelcomeMessage
+    deleteEnquiry,sendMessage, showwelcomeMessage
 }
